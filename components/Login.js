@@ -9,13 +9,16 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 import NavigationService from '../NavigationService';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const onLogin = () => {
     if (email.length == 0 && password.length == 0) {
@@ -27,12 +30,18 @@ const Login = () => {
       auth()
         .signInWithEmailAndPassword(email, password)
         .then(res => {
-          console.log('User registered successfully!');
-          setLoading(false);
-          setEmail('');
-          setPassword('');
+          database()
+            .ref('users/' + res.user.uid)
+            .once('value')
+            .then(function(snapshot) {
+              let updatedUser = snapshot.val();
+              dispatch({type: 'UPDATE_USER', payload: updatedUser.account});
+              console.log('User login successfully!');
+              setEmail('');
+              setPassword('');
 
-          NavigationService.navigate('Home');
+              NavigationService.navigate('Home');
+            });
         })
         .catch(error => {
           Alert.alert(error.message);

@@ -7,8 +7,9 @@ import {
   FlatList,
   StyleSheet,
   Image,
+  Anima,
 } from 'react-native';
-import {SharedElement} from 'react-native-shared-element';
+import {SharedElement} from 'react-navigation-shared-element';
 import datalist from '../data';
 import NavigationService from '../NavigationService';
 
@@ -30,7 +31,7 @@ const Item = ({item, onPress}) => (
           justifyContent: 'center',
           alignSelf: 'center',
         }}>
-        <SharedElement id="headerIcon">
+        <SharedElement id={`item.${item.id}.head`}>
           <Image
             style={{width: 80, height: 80, resizeMode: 'contain'}}
             source={require('../assets/assement.png')}
@@ -38,9 +39,11 @@ const Item = ({item, onPress}) => (
         </SharedElement>
       </View>
       <View style={{justifyContent: 'space-between'}}>
-        <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
-          {item.title}
-        </Text>
+        <SharedElement id={`item.${item.id}.title`}>
+          <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
+            {item.title}
+          </Text>
+        </SharedElement>
         <View>
           <Text style={{color: 'gray'}}>Earn up to</Text>
           <Text style={{color: 'gray'}}>
@@ -67,7 +70,7 @@ const CardList = () => {
       <Item
         item={item}
         onPress={() => {
-          NavigationService.navigate('Details', item);
+          NavigationService.push('Details', {item});
         }}
       />
     );

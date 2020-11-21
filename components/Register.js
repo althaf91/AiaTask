@@ -9,16 +9,25 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import {useDispatch} from 'react-redux';
 import NavigationService from '../NavigationService';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 const Register = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [conformEmail, setConformEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const onRegister = () => {
-    if (email.length == 0 && conformEmail.length == 0 && password.length == 0) {
+    if (
+      username.length == 0 &&
+      email.length == 0 &&
+      conformEmail.length == 0 &&
+      password.length == 0
+    ) {
       Alert.alert('Please enter all the fields');
     } else if (!ValidateEmail(email) || !ValidateEmail(conformEmail)) {
       Alert.alert('Email Not Valid');
@@ -29,13 +38,33 @@ const Register = () => {
       auth()
         .createUserWithEmailAndPassword(email, password)
         .then(res => {
-          console.log('User registered successfully!');
-          setLoading(false);
-          setEmail('');
-          setConformEmail('');
-          setPassword('');
+          let account = {};
+          account.email = email.toLowerCase();
+          account.uid = res.user.uid;
+          account.username = username;
+          database()
+            .ref('users/' + res.user.uid)
+            .set({
+              account,
+            })
+            .then(() => {
+              // ******** Now we need to grap a snapshot from the DB to validate account creation and update the redux store locally ********
+              database()
+                .ref('users/' + res.user.uid)
+                .once('value')
+                .then(function(snapshot) {
+                  let updatedUser = snapshot.val();
+                  dispatch({type: 'UPDATE_USER', payload: updatedUser.account});
+                  console.log('User registered successfully!');
+                  setLoading(false);
+                  setUsername('');
+                  setEmail('');
+                  setConformEmail('');
+                  setPassword('');
 
-          NavigationService.navigate('Home');
+                  NavigationService.navigate('Home');
+                });
+            });
         })
         .catch(error => Alert.alert(error.message));
     }
@@ -52,6 +81,14 @@ const Register = () => {
         <ActivityIndicator />
       ) : (
         <View style={{marginTop: 50}}>
+          <TextInput
+            style={styles.Input}
+            type="text"
+            placeholder="username"
+            value={username}
+            onChangeText={text => setUsername(text)}
+            returnKeyType="done"
+          />
           <TextInput
             style={styles.Input}
             type="text"
