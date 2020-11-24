@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   FlatList,
+  CheckBox,
   StyleSheet,
   Image,
 } from 'react-native';
@@ -141,6 +142,36 @@ const Details = props => {
               head={'Retake for points on'}
               icon={require('../assets/calendar.png')}
             />
+          </View>
+          <View style={{flexDirection: 'row', marginTop: 15}}>
+            <CheckBox
+              style={{width: 25, height: 25, marginRight: 5, borderWidth: 2}}
+            />
+            <Text style={{fontSize: 20}}>
+              {'I have read and agree to the '}
+              <Text style={{color: 'red'}}>{'terms and conditions'}</Text>
+            </Text>
+          </View>
+          <View style={{marginTop: 15}}>
+            <TouchableOpacity
+              style={{
+                width: '80%',
+                height: 50,
+                backgroundColor: 'lightpink',
+                alignSelf: 'center',
+                borderRadius: 10,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={{fontSize: 20, marginRight: 5}}>
+                {'Start assessment'}
+              </Text>
+              <Image
+                style={{width: 25, resizeMode: 'contain'}}
+                source={require('../assets/rightArrow.png')}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>

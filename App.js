@@ -22,6 +22,18 @@ import CardList from './components/CardList';
 import Details from './components/Details';
 import NavigationService from './NavigationService';
 
+export const TransitionSpec = {
+  animation: 'spring',
+  config: {
+    stiffness: 500,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 10,
+    restSpeedThreshold: 10,
+  },
+};
+
 enableScreens();
 const Stack = createStackNavigator();
 const CardStack = createSharedElementStackNavigator();
@@ -31,10 +43,48 @@ const CardStackScreen = () => {
   return (
     <CardStack.Navigator
       initialRouteName="CardList"
-      screenOptions={{headerShown: false}}
+      screenOptions={{
+        useNativeDriver: true,
+        transitionSpec: {
+          open: TransitionSpec,
+          close: TransitionSpec,
+        },
+        headerShown: false,
+        cardStyleInterpolator: ({current: {progress}}) => ({
+          cardStyle: {
+            opacity: progress,
+          },
+        }),
+      }}
       navigationOptions={{header: () => null}}>
       <CardStack.Screen name="CardList" component={CardList} />
-      <CardStack.Screen name="Details" component={Details} />
+      <CardStack.Screen
+        name="Details"
+        component={Details}
+        sharedElementsConfig={(route, otherRoute, showing) => {
+          const {item} = route.params;
+          if (route.name === 'Details' && showing) {
+            return [
+              {
+                id: `item.${item.id}.head`,
+              },
+              {
+                id: `item.${item.id}.title`,
+                nimation: 'fade',
+                resize: 'clip',
+                align: 'left-top',
+              },
+            ];
+          } else {
+            return [
+              {
+                id: `item.${item.id}.head`,
+                animation: 'fade',
+              },
+            ];
+          }
+        }}
+      />
     </CardStack.Navigator>
   );
 };
