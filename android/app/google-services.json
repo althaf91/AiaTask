@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "333614034644",
+    "firebase_url": "https://aiatask-4ff51.firebaseio.com",
+    "project_id": "aiatask-4ff51",
+    "storage_bucket": "aiatask-4ff51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333614034644:android:3b8a2106f92cb7c66a9541",
+        "android_client_info": {
+          "package_name": "com.aiatask"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "333614034644-td9d4k0n8mltqoc82k2c17ro59hndcn0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASuapM4makfU0YOjfauFGH7eNyUHdQp1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "333614034644-td9d4k0n8mltqoc82k2c17ro59hndcn0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "333614034644-p9mtdgc95t2p1va0gqja6o40jto3k9da.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aia.task"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

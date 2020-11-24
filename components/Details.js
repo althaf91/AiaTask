@@ -4,7 +4,7 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  FlatList,
+  Platform,
   CheckBox,
   StyleSheet,
   Image,
@@ -56,7 +56,7 @@ const Details = props => {
           justifyContent: 'center',
           borderRadius: 25,
           position: 'absolute',
-          top: 60,
+          top: Platform.OS === 'ios' ? 60 : 30,
           left: 20,
           zIndex: 1000,
           shadowOffset: {
